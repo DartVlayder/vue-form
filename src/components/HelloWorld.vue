@@ -4,12 +4,13 @@
       <div class="card__header--title">Введите данные</div>
       <hr>
     <div class="card__header">
-      <div class="card__header--form">
+      <div class="card__header--form" :class="{invalid: errors.surname}">
         Фамилия*
         <input type="text" 
           placeholder="Фамилия" 
           v-model.trim="surname"
         >
+        <small v-if="errors.name">{{ errors.surname }}</small>
       </div>
       <div class="card__header--form" :class="{invalid: errors.name}">
         Имя*
@@ -26,17 +27,19 @@
           v-model.trim="patronymic"
         >
       </div>
-      <div class="card__header--form">
+      <div class="card__header--form" :class="{invalid: errors.date}">
         Дата рождения*
         <input type="date" 
           v-model="date"
         >
+        <small v-if="errors.name">{{ errors.date }}</small>
       </div>
-      <div class="card__header--form">
+      <div class="card__header--form" :class="{invalid: errors.tel}">
         Номер телефона*
         <input type="tel" placeholder="+7 900 000 00 00" 
           v-model="tel"
         >
+        <small v-if="errors.tel">{{ errors.tel }}</small>
       </div>
       <div class="card__header--form">
         Пол
@@ -53,7 +56,7 @@
           <option value="problems">Проблемные</option>
         </select>
       </div>
-      <div class="card__header--form">
+      <div class="card__header--form" :class="{invalid: errors.doctor}">
         <label for="doctor">Лечащий врач*</label>
         <select name="doctor" id="doctor-select" v-model="doctor">
             <optgroup label="--Выберите лечащего врача--"></optgroup>
@@ -61,6 +64,7 @@
           <option value="doc2">Захаров</option>
           <option value="doc3">Чернышева</option>
         </select>
+        <small v-if="errors.doctor">{{ errors.doctor }}</small>
       </div>
       <div class="card__header--form">
         <div>
@@ -97,12 +101,13 @@
           v-model="region"
         >
       </div>
-      <div class="card__header--form">
+      <div class="card__header--form" :class="{invalid: errors.city}">
         Город*
         <input type="text" 
           placeholder="Курск" 
           v-model="city"
         >
+        <small v-if="errors.city">{{ errors.city }}</small>
       </div>
       <div class="card__header--form">
         Улица
@@ -124,13 +129,14 @@
       <div class="card__header--title">Паспорт</div>
       <hr>
     <div class="card__header">
-      <div class="card__header--form">
+      <div class="card__header--form" :class="{invalid: errors.docs}">
         <label for="docs">Тип документа*</label>
         <select name="docs" id="docs-select" >
           <option value="docs1">Паспорт</option>
           <option value="docs2">Свидетельство о рождении</option>
           <option value="docs3">Вод. удостоверение</option>
         </select>
+        <small v-if="errors.docs">{{ errors.docs }}</small>
       </div>
       <div class="card__header--form">
         Серия
@@ -155,12 +161,13 @@
           v-model.number="whom"
         >
       </div>
-      <div class="card__header--form">
+      <div class="card__header--form" :class="{invalid: errors.whomDate}">
         Дата выдачи*
         <input type="date" 
           v-model.number="whomDate"
         >
       </div>
+      <small v-if="errors.whomDate">{{ errors.whomDate }}</small>
     </div>
     <button type="submit" class="submit">Отправить данные</button>
     <div>*Поле обязательное для заполнения.</div>
@@ -194,24 +201,75 @@ export default {
       sex: null,
       sms: null,
       errors: {
-        name: null
+        name: null,
+        surname: null,
+        date: null,
+        tel: null,
+        clients: null,
+        doctor: null,
+        city: null,
+        docs: null,
+        whomDate: null
       }
     }
   },
   methods: {
     formIsValid() {
       let isValid = true
-      if (this.nameClient.length === 0) {
+      if (this.nameClient.length === 0
+        ) {
         this.errors.name = 'Введите ваше имя'
         isValid = false
       } else {
         this.errors.name = null
       }
+      if (this.surname.length === 0) {
+        this.errors.surname = 'Введите вашу фамилию'
+        isValid = false
+      } else {
+        this.errors.surname = null
+      }
+      if (this.date.length === 0) {
+        this.errors.date = 'Введите дату рождения'
+        isValid = false
+      } else {
+        this.errors.date = null
+      }
+      if (this.tel.length === 0) {
+        this.errors.tel = 'Введите ваш телфон'
+        isValid = false
+      } else {
+        this.errors.tel = null
+      }
+      if (this.clients.length === 0) {
+        this.errors.clients = 'Добавьте вашу группу'
+        isValid = false
+      } else {
+        this.errors.clients = null
+      }
+      if (this.doctor.length === 0) {
+        this.errors.doctor = 'Выберите врача'
+        isValid = false
+      } else {
+        this.errors.doctor = null
+      }
+      if (this.city.length === 0) {
+        this.errors.city = 'Добавьте город'
+        isValid = false
+      } else {
+        this.errors.city = null
+      }
+      if (this.whomDate.length === 0) {
+        this.errors.whomDate = 'Введите дату вычаи паспорта'
+        isValid = false
+      } else {
+        this.errors.whomDate = null
+      }
       return isValid
     },
     submitHandler() {
       if (this.formIsValid()) {
-        console.log(this.nameClient);/* 
+        console.log(this.nameClient);
         console.log(this.surname);
         console.log(this.date);
         console.log(this.tel);
@@ -219,7 +277,7 @@ export default {
         console.log(this.doctor);
         console.log(this.city);
         console.log(this.docs);
-        console.log(this.whomDate); */
+        console.log(this.whomDate);
       }
     }
   }
